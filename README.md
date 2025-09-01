@@ -1,77 +1,52 @@
-# proposta
+# API de Propostas - Mineradora
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Sistema simples para gerenciar propostas de compra de minérios de ferro. A aplicação permite a criação, consulta e remoção de propostas, notificando outros sistemas sobre novas propostas via Apache Kafka.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## ✨ Funcionalidades
 
-## Running the application in dev mode
+* **Criação de Propostas:** Registra novas propostas.
+* **Consulta de Propostas:** Busca os detalhes de uma proposta específica pelo seu ID.
+* **Remoção de Propostas:** Exclui uma proposta do sistema.
+* **Integração com Kafka:** Publica um evento no tópico `proposal` sempre que uma nova proposta é criada.
 
-You can run your application in dev mode that enables live coding using:
+## 🚀 Tecnologias Utilizadas
 
-```shell script
-./mvnw quarkus:dev
-```
+* **Java 17+**
+* **Quarkus:** Framework Java nativo para nuvem.
+* **Hibernate ORM com Panache:** Para persistência de dados.
+* **PostgreSQL:** Banco de dados relacional.
+* **SmallRye Reactive Messaging (Kafka):** Para mensageria assíncrona.
+* **Docker & Docker Compose:** Para gerenciamento de dependências (Kafka e PostgreSQL).
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+## 📋 Pré-requisitos
 
-## Packaging and running the application
+* JDK 17 ou superior
+* Maven 3.8+ ou Gradle
+* Docker e Docker Compose
 
-The application can be packaged using:
+## ⚙️ Como Executar
 
-```shell script
-./mvnw package
-```
+1.  **Inicie os serviços de dependência (Kafka & PostgreSQL):**
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+    No terminal, a partir da raiz do projeto, suba os contêineres Docker:
+    ```bash
+    docker-compose up -d
+    ```
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+2.  **Execute a aplicação Quarkus:**
 
-If you want to build an _über-jar_, execute the following command:
+    Abra outro terminal e execute o seguinte comando:
+    ```bash
+    ./mvnw quarkus:dev
+    ```
+    A aplicação estará disponível em `http://localhost:8091`.
 
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
+## 📡 Endpoints da API
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+A URL base da API é `http://localhost:8091/api/proposal`.
 
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/proposta-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
-
-## Provided Code
-
-### Hibernate ORM
-
-Create your first JPA entity
-
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
-
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+| Método | Endpoint | Descrição | Exemplo de Body (JSON) |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/` | Cria uma nova proposta. | `{"customer": "Vale S.A.", "priceTonne": 150.50, "tonnes": 5000, "country": "BR", "proposalValidityDays": 30}` |
+| `GET` | `/{id}` | Busca uma proposta por ID. | N/A |
+| `DELETE` | `/{id}` | Remove uma proposta por ID. | N/A |
