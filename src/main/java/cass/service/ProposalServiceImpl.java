@@ -5,11 +5,12 @@ import cass.dto.ProposalDetailsDTO;
 import cass.entity.ProposalEntity;
 import cass.message.KafkaEvent;
 import cass.repository.ProposalRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
 import java.util.Date;
 
+@ApplicationScoped
 public class ProposalServiceImpl implements ProposalService {
 
     @Inject
@@ -47,7 +48,7 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Transactional
-    private ProposalDTO buildAndSaveNewProposal (ProposalDetailsDTO proposalDetailsDTO){
+    public ProposalDTO buildAndSaveNewProposal (ProposalDetailsDTO proposalDetailsDTO){
 
         try{
             ProposalEntity proposal = new ProposalEntity();
